@@ -1,3 +1,4 @@
+from random import Random
 from django.shortcuts import render
 from markdown2 import Markdown
 from django import forms
@@ -6,6 +7,7 @@ from django.http import HttpResponseRedirect
 from . import util
 
 markdown = Markdown()
+random = Random()
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
@@ -83,3 +85,8 @@ def editEntry(request):
         if title and content:
             util.save_entry(title, content)
             return HttpResponseRedirect(f"wiki/{title}")
+
+def randomEntry(request):
+    entries = util.list_entries()
+    title = random.choice(entries)
+    return HttpResponseRedirect(f"wiki/{title}")
