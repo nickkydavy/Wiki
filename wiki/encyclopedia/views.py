@@ -48,6 +48,8 @@ def addEntry(request):
         content = request.POST.get("content")
         titleError = ""
         contentError = ""
+        if title in util.list_entries():
+                titleError = "This entry is already exists."
         if not title or not content:
             if not title:
                 titleError = "Please enter your title"
@@ -60,11 +62,6 @@ def addEntry(request):
                 "contentError" : contentError
             })
         else:
-            entries = util.list_entries()
-            if title in entries:
-                return render(request, "encyclopedia/add.html", {
-                    "titleError" : "This entry is already exists"
-                })
             util.save_entry(title, content)
             return HttpResponseRedirect(f"wiki/{title}")
     return render(request, "encyclopedia/add.html")
