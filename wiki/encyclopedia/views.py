@@ -41,9 +41,6 @@ def searchForm(request):
             })
 
 def addEntry(request):
-    if request.method == "GET":
-        title = "" or request.GET.get('title')
-        
     if request.method == "POST":
         title = request.POST.get("title")
         content = request.POST.get("content")
@@ -68,5 +65,21 @@ def addEntry(request):
                 })
             util.save_entry(title, content)
             return HttpResponseRedirect(f"wiki/{title}")
-    title = "" or request.GET.get('title')
     return render(request, "encyclopedia/add.html")
+
+def editEntry(request):
+    if request.method == "GET":
+        title = request.GET.get("title")
+        if title:
+            if title in util.list_entries():
+                content = util.get_entry(title)
+                return render(request, "encyclopedia/edit.html", {
+                    "title": title,
+                    "content": content
+                })
+    if request.method == "POST":
+        title = request.POST.get("title")
+        content = request.POST.get("content")
+        if title and content:
+            util.save_entry(title, content)
+            return HttpResponseRedirect(f"wiki/{title}")

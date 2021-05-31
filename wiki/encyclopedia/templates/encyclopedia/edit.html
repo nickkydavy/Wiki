@@ -1,0 +1,26 @@
+{% extends "encyclopedia/layout.html" %}
+{% block title %}
+    {{ title }}(Edit) - encyclopedia
+{% endblock %}
+
+{% block body %}
+<div class="addForm">
+    <h2> Add Encyclopedia </h2>
+    <form action="" method="post">
+        {% csrf_token %}        
+        <div>
+            <div>
+                <label for="">Title : </label>
+                <input type="text" name="title" id="" value="{{ title }}">
+                <label for="" style="color: red;">{{ titleError }}</label>
+            </div>
+            <div style="display: flex; align-items: flex-start;">
+                <label for="">Content : </label>
+                <textarea name="content" id="">{{ content|safe }}</textarea>
+                <label for="" style="color: red;">{{ contentError }}</label>
+            </div>
+        </div>
+        <input type="submit" value="Add">
+    </form>
+</div>
+{% endblock %}
